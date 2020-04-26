@@ -25,7 +25,10 @@ static int  Wlen;
 
 
 int main (void){
-	setup ("googol$", "lol", "glo");
+	char X[] = "googol$";
+	char W[] = "lol";
+	char dict[] = "glo";
+	setup (X, W, dict);
 	return 0;
 }
 
@@ -48,12 +51,13 @@ void setup (char* X1, char* W1, char* dic1){
 	B   = (char*) calloc (length, sizeof (char));
 	X2  = (char*) calloc (2*length+1, sizeof (char));
 	for (i = 0; i != length; i++)
-		BWT[i] = (char*)malloc (length*sizeof (char) + 2);
+		BWT[i] = (char*)malloc (length*sizeof (char)+1);
 
 	sprintf (X2, "%s%s", X, X);
 
 	for (i = 0; i != length; i++)
 		sprintf (BWT[i], "%.*s", (int)length, X2+i);
+
 
 	sort (BWT, length);
 	CalculateD (W1);
@@ -64,8 +68,9 @@ void setup (char* X1, char* W1, char* dic1){
 	i = 0; while (X[++i]);
 	InexRecur (W1, Wlen - 1, 1, 0, i - 1);
 
-	free (D); free (Xs);
-	free (B); free (X2);
+	free (Xs);
+       	free (X2);
+	free (D);
 	for (i = 0; i != length ; i++) free (BWT[i]);
 	free (BWT);
 }

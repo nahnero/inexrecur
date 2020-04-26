@@ -288,5 +288,51 @@ variance introduced by outliers: 16% (moderately inflated)
 \end{lstlisting}
 \end{codesnip}
 \vfill
+\begin{codesnip}{Memoria usada medido usando herramientas
+	de los lenguajes.}
+\begin{lstlisting}
+inexrecur_clean.c
+==81469==     in use at exit: 18,588 bytes in 164 blocks
+==81469==   total heap usage: 191 allocs, 27 frees, 24,894 bytes allocated
+
+inexrecur_mem.py
+6,631,424 bytes
+
+inexrecur_mem.R
+4,932,584 bytes
+\end{lstlisting}
+\end{codesnip}
+
+
+\vfill
+\begin{codesnip}{Memoria usada medido usando herramientas
+	del sistema operativo.}
+\begin{lstlisting}
+time ./inexrecur_clean
+(5,5)
+(1,1)
+./inexrecur_clean
+0.00s  user 0.00s system 44% cpu 0.004 total
+max memory:                676 kB
+
+time ./inexrecur_clean.py
+(1, 1)
+(5, 5)
+./inexrecur_clean.py
+0.03s  user 0.01s system 82% cpu 0.039 total
+max memory:                6272 kB
+
+time ./inexrecur_clean.R
+[[1]]
+[1] 5 5
+
+[[2]]
+[1] 1 1
+
+./inexrecur_clean.R
+0.23s  user 0.04s system 97% cpu 0.277 total
+max memory:                67476 kB
+\end{lstlisting}
+\end{codesnip}
 
 \end{document}

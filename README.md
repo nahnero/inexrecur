@@ -2,17 +2,17 @@
 
 ## Archivos
 
-* latex:
-	* contiene el documento .pdf de explicación del proyecto
+* [latex](https://github.com/nahnero/inexrecur/tree/master/latex):
+	* contiene el [documento](https://github.com/nahnero/inexrecur/blob/master/latex/writeup.pdf) .pdf de explicación del proyecto
 
-* inexrecur_clean*:
+* inexrecur_clean.*:
 	* implementación *naive* recursiva en C, Python y R **pura**
 
-* inexrecur_trace*:
+* inexrecur_trace.*:
 	* contiene, además del algoritmo, declaraciones *print* para dibujar
 		 la traza que sigue el algoritmo
 
-* inexrecur_time*:
+* inexrecur_time.*:
 	* contiene, además del algoritmo, declaraciones para medir el tiempo de
 	ejecución del código
 

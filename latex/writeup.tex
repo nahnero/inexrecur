@@ -64,8 +64,12 @@
 
 \begin{document}
 \maketitle
-
-\newpage
+\begin{figure}[h]
+\centering
+\includegraphics[width = 0.35\linewidth]{../gallery/googol.pdf}
+\caption{Árbol de prefijos con intervalos SA de la palabra ``googol\$''.}
+\end{figure}
+\clearpage
 \phantom{}
 \vfill
 Hemos implementado las trazas de manera que son perfectamente
@@ -288,8 +292,7 @@ variance introduced by outliers: 16% (moderately inflated)
 \end{lstlisting}
 \end{codesnip}
 \vfill
-\begin{codesnip}{Memoria usada medido usando herramientas
-	de los lenguajes.}
+\begin{codesnip}{Memoria usada medido desde el script.}
 \begin{lstlisting}
 inexrecur_clean.c
 ==81469==     in use at exit: 18,588 bytes in 164 blocks
@@ -305,8 +308,7 @@ inexrecur_mem.R
 
 
 \vfill
-\begin{codesnip}{Memoria usada medido usando herramientas
-	del sistema operativo.}
+\begin{codesnip}{Memoria usada medido desde fuera del script.}
 \begin{lstlisting}
 time ./inexrecur_clean
 (5,5)
@@ -335,4 +337,21 @@ max memory:                67476 kB
 \end{lstlisting}
 \end{codesnip}
 
+\begin{figure}[h]
+\centering
+\includegraphics[width = 0.35\linewidth]{../gallery/bananas.pdf}
+\caption{Árbol de prefijos con intervalos SA de la palabra ``bananas\$''.}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width = \linewidth]{../gallery/gen.pdf}
+\caption{Árbol de prefijos con intervalos SA de la palabra ``cgatagtcgggatggttgccg\$''.}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width = 0.5\linewidth]{../gallery/ab.pdf}
+\caption{Árbol de prefijos con intervalos SA de la palabra ``aaaabbbbb\$''.}
+\end{figure}
 \end{document}

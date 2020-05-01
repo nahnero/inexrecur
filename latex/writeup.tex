@@ -7,6 +7,7 @@
 \usepackage{xcolor}
 \usepackage{listings}
 \usepackage{matlab-prettifier}
+\usepackage{listingsutf8}
 \usepackage[hidelinks]{hyperref}
 \setlength{\parindent}{3mm}
 \setlength{\parskip}{5mm}
@@ -31,37 +32,37 @@
 
 \newcommand{\tempcaption}{}
 
-\newenvironment{code}[4]
-{
+\newenvironment{code}[4]{
 \begin{table}[h!]
 \gdef\tempcaption{Traza de \textsc{InexRecur} con X = ``#1'', W = ``#2'', z = #3 en #4}
 \centering
 \begin{tabular}{|c|}
-\hline
-}
-{
-\\\hline
+\hline }
+{\\\hline
 \end{tabular}
-\caption{\tempcaption}
-\end{table}
-}
+\caption{\protect\tempcaption}
+\end{table} }
 
-\newenvironment{codesnip}[1]
-{
+\newenvironment{codesnip}[1]{
 \begin{table}[h!]
 \gdef\tempcaption{#1}
 \centering
 \begin{tabular}{|c|}
-\hline
-}
-{
-\\\hline
+\hline}
+{\\\hline
 \end{tabular}
 \caption{\tempcaption}
-\end{table}
+\end{table}}
+
+\newcommand{\C}{%
+\raisebox{-.25\height}{\includegraphics[scale=.04]{../gallery/c.pdf}}{\hspace{0.5ex}}}
+\newcommand{\R}{%
+\raisebox{-.06\height}{\includegraphics[scale=.006]{../gallery/R.pdf}{\hspace{1ex}}}}
+\newcommand{\python}{%
+\raisebox{-.25\height}{\includegraphics[scale=.017]{../gallery/python3.pdf}}
 }
 
-
+\let\depth\relax
 \begin{document}
 \maketitle
 \begin{figure}[h]
@@ -70,12 +71,51 @@
 \caption{Árbol de prefijos con intervalos SA de la palabra ``googol\$''.}
 \end{figure}
 \clearpage
-\phantom{}
-\vfill
-Hemos implementado las trazas de manera que son perfectamente
-idénticas en Python y en C.\\
 
-\begin{code}{googol\$}{gol}{0}{C y Python}
+\section{Materiales}
+
+Los  lenguajes	que  hemos  comparado  son  \R,  \python  y  \C.    La
+implementación en \R es la misma a la usada en	las  prácticas	de  la
+asignatura.  Con la implementación proporcionada  hemos  dividido  dos
+versiones, una que dibuja la traza y otra que calcula el resultado  de
+forma limpia.  Todas las versiones del código escrito está  disponible
+en el anejo.
+
+El tiempo y la memoria la hemos medido de dos maneras. Primero hemos
+evaluado a la función únicamente usando herramientas del lenguaje. En
+\python hemos usado los paquetes
+\lstinline[style=matlab-editor]{resource} y
+\lstinline[style=matlab-editor]{time} para medir el tiempo y la
+memoria. En \R hemos usado la utilidad
+\lstinline[style=matlab-editor]{system.time} para el tiempo y la
+libreria \lstinline[style=matlab-editor]{profmem} para perfilar el uso
+de memoria. En \C{} hemos medido el tiempo usando la librería
+\lstinline[style=matlab-editor]{time.h} y la memoria usando la
+herramienta \lstinline[style=matlab-editor]{Valgrind}. Después hemos
+medido el uso de recursos desde la línea de comandos, llamando a los
+programas como scripts usando funcionalidades propias de cada
+lenguaje. Con ello podemos evaluar el sobrecoste de cada una de las
+tres plataformas usadas. Para ello hemos empleado la herramienta
+\lstinline[style=matlab-editor]{bench}
+% https://github.com/Gabriel439/bench
+y el comando \lstinline[style=matlab-editor]{time}.
+% https://www.gnu.org/software/time/
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width = 0.4\linewidth]{../gallery/ab.pdf}
+\caption{Árbol de prefijos con intervalos SA de la palabra ``aaaabbbbb\$''.}
+\end{figure}
+
+\section{Resultados}
+
+Hemos implementado las trazas de manera que son perfectamente
+idénticas en \python y en \C. A continuación mostramos algunos
+ejemplos comparativos para verificar que todos los programas se
+comportan de forma igual. Posteriormente comparamos el uso de
+tiempo y memoria.
+\\
+\begin{code}{googol\$}{gol}{0}{\C y \python}
 \begin{lstlisting}
 		   Mutation  i  z  k  l
  Deletion            [l]     1 -1  0  6
@@ -94,8 +134,9 @@ idénticas en Python y en C.\\
  Substitution    [o] -> [l]  1 -1  4  6
 \end{lstlisting}
 \end{code}
+\phantom{}
 \vfill
-\begin{code}{googol\$}{gol}{0}{R}
+\begin{code}{googol\$}{gol}{0}{\R}
 \begin{lstlisting}
 |     INEXRECUR   -   by XAVI GABRI AITANA ALFREDO     |
 -    D       [ l ]        1    -1    0    6
@@ -115,10 +156,10 @@ idénticas en Python y en C.\\
 \end{lstlisting}
 \end{code}
 \vfill
-\newpage
+\clearpage
 \phantom{}
-\vfill
-\begin{code}{googol\$}{goog}{0}{C y Python}
+\vspace{1cm}
+\begin{code}{googol\$}{goog}{0}{\C y \python}
 \begin{lstlisting}
                    Mutation  i  z  k  l
  Deletion            [g]     2 -1  0  6
@@ -137,7 +178,7 @@ idénticas en Python y en C.\\
 \end{lstlisting}
 \end{code}
 \vfill
-\begin{code}{googol\$}{goog}{0}{R}
+\begin{code}{googol\$}{goog}{0}{\R}
 \begin{lstlisting}
 |     INEXRECUR   -   by XAVI GABRI AITANA ALFREDO     |
 -    D       [ g ]        2    -1    0    6
@@ -156,11 +197,10 @@ idénticas en Python y en C.\\
 \end{lstlisting}
 \end{code}
 \vfill
-
-\newpage
+\clearpage
 \phantom{}
 \vfill
-\begin{code}{googol\$}{gool}{1}{C y Python}
+\begin{code}{googol\$}{gool}{1}{\C y \python}
 \begin{lstlisting}
                    Mutation  i  z  k  l
  Deletion            [l]     2  0  1  6
@@ -203,7 +243,7 @@ idénticas en Python y en C.\\
 \end{lstlisting}
 \end{code}
 \vfill
-\begin{code}{googol\$}{gool}{1}{R}
+\begin{code}{googol\$}{gool}{1}{\R}
 \begin{lstlisting}
 |     INEXRECUR   -   by XAVI GABRI AITANA ALFREDO     |
 -    D       [ l ]        2    0    1    6
@@ -248,50 +288,64 @@ idénticas en Python y en C.\\
 \vfill
 
 \clearpage
-% 297 $\mu$s $\pm$ 1.31 $\mu$s per loop (mean $\pm$ std. dev. of 7 runs, 1000 loops each)
-\phantom{}
-\vfill
+
+Se puede comprobar que las tres trazas contienen la misma información.
+Procedemos ahora a la comparación de los tiempos medidos, primero las
+mediciones tomadas desde el propio programa.
 \begin{codesnip}{Tiempos de ``CPU''.}
 \begin{lstlisting}
 inexrecur_time.c
-12.34 $\mu$s from 10000 iterations.
+$\textcolor{blue}{\text{12.34} \mu s}$ from 10000 iterations.
 
 inexrecur_time.py
-real     sys    user
-268.89$\mu$s  0.37$\mu$s 268.16$\mu$s
+real    sys   user
+$\textcolor{blue}{\text{268.89} \mu s}$      0.37$\mu$s 268.16$\mu$s
 
 inexrecur_time.R
 user     system   elapsed
-5422$\mu$s    18$\mu$s      5443$\mu$s
+$\textcolor{blue}{\text{5422}\mu s}$         18$\mu$s      5443$\mu$s
 \end{lstlisting}
 \end{codesnip}
-\vfill
-Ejecutando desde la línea de comandos como scripts usando
+
+\vspace{-0.75cm}
+En cada caso tomamos múltiples lecturas y hacemos la media. Como es de
+esperar la solución compilada de \C{} es $\sim$20 veces más rápida al
+script de \python y \R parece ser $\sim$450 veces más
+lento que \C{} y $\sim$20 veces más lento que \python. Para
+comparar el efecto del interpretador medimos ahora el tiempo
+ejecutando desde la línea de comandos. LLamamos a los scripts usando
 \texttt{\#!/bin/env Rscript} y \texttt{\#!/bin/env Python}.
+\vspace{0.3cm}
 \begin{codesnip}{Tiempo de ``pared'' según la utilidad \textit{bench}.}
 \begin{lstlisting}
 bench ./inexrecur_clean ./inexrecur_clean.py ./inexrecur_clean.R
 benchmarking bench/./inexrecur_clean
-time                 4.524 ms    (4.496 ms .. 4.551 ms)
+time                 $\textcolor{blue}{\text{4.524 ms}}$           (4.496 ms .. 4.551 ms)
                      0.999 R$^2$     (0.999 R$^2$ .. 1.000 R$^2$)
 mean                 4.522 ms    (4.499 ms .. 4.559 ms)
 std dev              89.83 $\mu$s     (58.07 $\mu$s .. 133.1 $\mu$s)
 
 benchmarking bench/./inexrecur_clean.py
-time                 39.26 ms   (39.12 ms .. 39.40 ms)
+time                 $\textcolor{blue}{\text{39.26 ms}}$           (39.12 ms .. 39.40 ms)
                      1.000 R$^2$    (1.000 R$^2$ .. 1.000 R$^2$)
 mean                 39.30 ms   (39.18 ms .. 39.45 ms)
 std dev              266.5 $\mu$s    (177.4 $\mu$s .. 388.7 $\mu$s)
 
 benchmarking bench/./inexrecur_clean.R
-time                 278.5 ms   (273.6 ms .. 285.0 ms)
+time                 $\textcolor{blue}{\text{278.5 ms}}$           (273.6 ms .. 285.0 ms)
                      1.000 R$^2$    (1.000 R$^2$ .. 1.000 R$^2$)
 mean                 280.6 ms   (279.1 ms .. 281.9 ms)
 std dev              1.714 ms   (1.027 ms .. 2.517 ms)
 variance introduced by outliers: 16% (moderately inflated)
 \end{lstlisting}
 \end{codesnip}
-\vfill
+
+\vspace{-0.7cm}
+En este caso \C{} es $\sim$10 veces más rápido a \python y $\sim$70
+veces más rápido que \R, que continua siendo $\sim$7 veces más lento
+que \python.
+
+\clearpage
 \begin{codesnip}{Memoria usada medido desde el script.}
 \begin{lstlisting}
 inexrecur_clean.c
@@ -306,6 +360,9 @@ inexrecur_mem.R
 \end{lstlisting}
 \end{codesnip}
 
+La memoria usada es comparable en \R y \python cuando la medimos sin
+tener en cuenta el entorno de ejecución, \C{} utiliza entorno a 200
+veces menos memoria.
 
 \vfill
 \begin{codesnip}{Memoria usada medido desde fuera del script.}
@@ -337,6 +394,14 @@ max memory:                67476 kB
 \end{lstlisting}
 \end{codesnip}
 
+Cuando consideramos el entorno de ejecución interpretado al completo
+\C{} se mantiene a la cabeza con la sorpresa de que \R emplea $\sim$10
+veces más memoria que \python en este ejemplo en particular.
+
+\clearpage
+
+\phantom{}
+\vspace{3cm}
 \begin{figure}[h]
 \centering
 \includegraphics[width = 0.35\linewidth]{../gallery/bananas.pdf}
@@ -348,10 +413,42 @@ max memory:                67476 kB
 \includegraphics[width = \linewidth]{../gallery/gen.pdf}
 \caption{Árbol de prefijos con intervalos SA de la palabra ``cgatagtcgggatggttgccg\$''.}
 \end{figure}
+\clearpage
+\section{Anejo}
 
-\begin{figure}[h]
-\centering
-\includegraphics[width = 0.5\linewidth]{../gallery/ab.pdf}
-\caption{Árbol de prefijos con intervalos SA de la palabra ``aaaabbbbb\$''.}
-\end{figure}
+\lstinputlisting[
+	frame=single,
+	mathescape=false,
+	basicstyle=\linespread{1}\ttfamily,
+	caption={\protect\python inexrecur\_clean.py},
+]{../inexrecur_clean.py}
+
+\lstinputlisting[
+	frame=single,
+	mathescape=false,
+	basicstyle=\linespread{1}\ttfamily,
+	caption={\protect\R inexrecur\_clean.R},
+]{../inexrecur_clean.R}
+
+\lstinputlisting[
+	firstline=27,
+	lastline=85,
+	frame=single,
+	mathescape=false,
+	basicstyle=\linespread{1}\ttfamily,
+	caption={\protect\C inexrecur\_clean.c},
+]{../inexrecur_clean.c}
+
+\phantom{}
+\vfill
+\lstinputlisting[
+	firstline=85,
+	% lastline=115,
+	firstnumber=59,
+	frame=single,
+	mathescape=false,
+	basicstyle=\linespread{1}\ttfamily,
+]{../inexrecur_clean.c}
+\vfill
+
 \end{document}

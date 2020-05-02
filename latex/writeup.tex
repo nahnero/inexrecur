@@ -6,15 +6,18 @@
 \usepackage{wrapfig}
 \usepackage{xcolor}
 \usepackage{listings}
+\usepackage{array}
 \usepackage{matlab-prettifier}
 \usepackage{listingsutf8}
+\usepackage[utf8]{inputenc}
 \usepackage[hidelinks]{hyperref}
 \setlength{\parindent}{3mm}
 \setlength{\parskip}{5mm}
 \linespread{1.65}
 \renewcommand{\figurename}{Fig.}
 
-\title{\textbf{Trabajo Bioinform\'atica}\thanks{\href{https://www.upv.es/titulaciones/GIB/indexc.html}{Grado en Ingeniería Biomédica, Escuela Técnica Superior de Ingenieros Industriales, Valencia, España.}}}
+\title{\textbf{Implementación del algoritmo InexRecur en Python y
+comparación con implementación en R.}\thanks{\href{https://www.upv.es/titulaciones/GIB/indexc.html}{Grado en Ingeniería Biomédica, Escuela Técnica Superior de Ingenieros Industriales, Valencia, España.}}}
 
 \date{\today}
 \author{
@@ -54,58 +57,282 @@
 \caption{\tempcaption}
 \end{table}}
 
-\newcommand{\C}{%
-\raisebox{-.25\height}{\includegraphics[scale=.04]{../gallery/c.pdf}}{\hspace{0.5ex}}}
-\newcommand{\R}{%
-\raisebox{-.06\height}{\includegraphics[scale=.006]{../gallery/R.pdf}{\hspace{1ex}}}}
-\newcommand{\python}{%
-\raisebox{-.25\height}{\includegraphics[scale=.017]{../gallery/python3.pdf}}
-}
+% \newcommand{\C}{%
+% \raisebox{-.25\height}{\includegraphics[scale=.04]{../gallery/c.pdf}}{\hspace{0.5ex}}}
+% \newcommand{\R}{%
+% \raisebox{-.06\height}{\includegraphics[scale=.006]{../gallery/R.pdf}{\hspace{1ex}}}}
+% \newcommand{\python}{%
+% \raisebox{-.25\height}{\includegraphics[scale=.017]{../gallery/python3.pdf}}
+% }
+
+\newcommand{\C}{C }
+\newcommand{\R}{R }
+\newcommand{\python}{Python }
 
 \let\depth\relax
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
 \begin{document}
 \maketitle
 \begin{figure}[h]
 \centering
 \includegraphics[width = 0.35\linewidth]{../gallery/googol.pdf}
 \caption{Árbol de prefijos con intervalos SA de la palabra ``googol\$''.}
+\label{fig:arbol1}
 \end{figure}
+
 \clearpage
+
+\section*{Resumen}
+
+Debido a la aparición  de  nuevas  técnicas  de  secuenciación	masiva
+(NGS), existen numerosas herramientas para conocer las secuencias  del
+genoma, entre ellas  el  \textit{Burrows-Wheeler  Aligner}  (BWA),  un
+alineador destinado al alineamiento de secuencias cortas a  partir  de
+un genoma de referencia y permitiendo huecos \cite{gimenez_2016}.  BWA
+se basa en  la	transformada  de  Burrows-Wheeler  (BWT)  y  tiene  la
+capacidad de realizar búsquedas inexactas de forma recursiva  mediante
+el método InexRecur \cite{li_durbin_2009}.
+
+Hemos implementado InexRecur en Python y realizado una comparación con
+el mismo algoritmo en R.  Los resultados  obtenidos  muestran  que  la
+implementación de la función de búsqueda recursiva inexacta en	Python
+proporciona un menor tiempo de procesamiento, menor uso de  memoria  y
+una sintaxis más comprensible para el usuario en  comparación  con  R.
+
+\section{Introducción}
+
+
+El campo de la bioinformática ha experimentado una gran  evolución  en
+los últimos años; cada vez secuenciar el genoma  es  más  asequible  y
+esto es gracias a las  denominadas  New  Generation  Sequencing  (NGS)
+\cite{gimenez_2016}, nuevas técnicas más  potentes  y  menos  costosas
+computacionalmente.    Dichas	técnicas   emplean    algoritmos    de
+alineamiento que permiten llevar a cabo una secuenciación  masiva  del
+ADN \cite{li_durbin_2009} con el fin  de  conocer  sus	secuencias  de
+nucleótidos y poder compararlas  entre	individuos  de	las  mismas  o
+diferentes  especies,  así  como  hallar  el  origen  evolutivo  o  la
+ortología u homología genética.
+
+Pero el hecho de que cada vez existan más  técnicas  de  secuenciación
+supone un problema a la hora de seleccionar una  entre	todos  las  ya
+diseñadas.  Burrows-Wheeler Aligner  es  un  alineador	basado	en  la
+transformada de Burrows-Wheeler (BWT) que  permite,  a	partir	de  un
+genoma de referencia,  compararlo  con	secuencias  cortas  realizando
+búsquedas recursivas.  Además, a diferencia de otros alineadores  como
+Bowtie,  BWA  permite  errores	y  gaps  (huecos)  en  las  secuencias
+\cite{gimenez_2016}.  De esta forma BWA nos ofrece la  posibilidad  de
+realizar búsquedas exactas  (sin  errores  ni  gaps)  o  inexactas(con
+errores y gaps)  \cite{gomez_2020}.   En  concreto,  InexRecur	es  el
+algoritmo recursivo  empleado  por  BWA  para  la  búsqueda  inexacta.
+
+Por otro lado, en cuanto a lenguajes de programación existen  un  gran
+número en el mercado.  Y en concreto, para el análisis de datos Python
+y R son  los  más  empleados  para  ello.   En	el  presente  artículo
+presentaremos el algoritmo en InexRecur en el lenguaje de programación
+Python	 y   la   compararemos	 con   su   implementación    en    R.
+
+\section{Métodos}
+\subsection{Precálculo}
+\subsubsection{Árbol de prefijos}
+
+El árbol de prefijos es una estructura con forma de árbol  obtenida  a
+partir de una cadena de texto de referencia X en la que cada  carácter
+es referenciado por una arista.   De  esta  manera,  concatenando  los
+caracteres de una arista de un nodo a la raíz se obtiene un  substring
+único de X o cadena representada por el nodo.  Cabe  destacar  que  el
+árbol de prefijos de X es igual al árbol de  sufijos  de  X  invertida
+(X’) Esta herramienta facilita la búsqueda de, dado  un  substring  W,
+saber si pertenece a X,  pues  solo  habrá  que  buscar  el  nodo  que
+representa a W.  Podemos observar un ejemplo de un árbol  de  prefijos
+en la \hyperref[fig:arbol1]{{Fig.}~\ref*{fig:arbol1},}
+\hyperref[fig:arbol2]{\ref*{fig:arbol2},}
+\hyperref[fig:arbol3]{\ref*{fig:arbol3},}
+\hyperref[fig:arbol4]{\ref*{fig:arbol4}}.
+
+\subsubsection{Vector de sufijos (B[i]) para la cadena de referencia X
+}
+
+
+El primer paso de la búsqueda inexacta en Burrows-Wheeler es la
+creación del vector de sufijos B[i] dada una cadena de texto de
+referencia X. B[i] será una cadena de texto con los mismos caracteres
+que X pero ordenada lexicográficamente \cite{belda_2020}. En la Figura
+1 mostramos un ejemplo sencillo de la contrucción de B[i] a partir de
+un X de referencia.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width = 0.5\linewidth]{../gallery/dia1.pdf}
+\caption{Ejemplo de la creación del vector de sufijos.}
+\label{fig:dia1}
+\end{figure}
+
+\subsubsection{Vector C(a)}
+
+El vector C(a) en Burrows-Wheeler se obtiene para observar si W es un
+substring perteneciente a X, y representa el número de caracteres en
+X[0, n-2] lexicográficamente inferiores a a. En la Figura 2 mostramos
+un ejemplo del vector C(a).
+
+\subsubsection{Vector O(a,i)}
+
+Otro vector implicado en  BWA  es  O(a,i)  que	indica	el  número  de
+ocurrencias de un símbolo a en B[0,i].	Además, en InexRecur se  puede
+realizar búsquedas inexactas de manera que, dado un W no perteneciente
+a X pero con un número de errores  menores  a  un  umbral  z,  podemos
+encontrar secuencias similares en el árbol de prefijos. En la Figura 2
+podemos observar un ejemplo de O(a,i).
+
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|P{3cm}|P{3cm}|}
+	\hline
+	X = `googol\$' & B[i] = `lo\$oogg' \\\hline
+	W = `lol' & C = (3, 2, 3) \\
+\end{tabular}
+\begin{tabular}{|P{3cm}|P{3cm}|P{3cm}|}
+	\hline
+\multicolumn{3}{|c|}{O(a,i)} \\ \hline
+i & l & o \\ \hline
+0 & 1 & 0 \\
+1 & 1 & 1 \\
+2 & 1 & 1 \\
+3 & 1 & 2 \\
+4 & 1 & 3 \\
+5 & 1 & 3 \\
+6 & 1 & 3 \\ \hline
+\end{tabular}
+\caption{Obtención de los vectores C(a) y O(a,i) dado  W y X.}
+\label{table:tab1}
+\end{table}
+
+
+\subsubsection{Vector de sufijos B’[i] para la cadena de referencia
+invertida X’}
+
+De forma análoga a la obtención del vector de sufijos B[i], podemos
+obtener B’[i] de X’.
+
+\subsubsection{Vector O’(a,i) para B’[i]}
+
+Una vez obtenido B’[i] calculamos su función correspondiente O’(a,i)
+(Ejemplo en la \hyperref[table:tab1]{Cuadro~\ref*{table:tab1}}).
+Este es el último paso del precálculo, a partir del cual ya podremos
+llevar a cabo la búsqueda inexacta.
+
+\subsection{Búsqueda inexacta}
+
+\subsubsection{Función CalculateD}
+
+Previamente a comenzar con la función InexRecur deberemos  implementar
+la función CalculateD para obtener el  vector  D.   Este  vector  hace
+referencia al número de fallos realizados hasta el momento.  Por ello,
+CalculateD deberá comparar en cada iteración D con el valor de	máximo
+de errores permitidos z ,  y  cuando  sea  igual  o  superior,	parar.
+
+El parámetro de entrada a  la  función	será  el  substring  W,  y  el
+parámetro de salida será el propio vector D.  La lógica llevada a cabo
+en la  función	será  la  mostrada  en	la  Figura  3.	 El  algoritmo
+establecerá unos valores para el umbral z y para el  primer  parámetro
+de W, j, e irá recorriendo en un bucle la subcadena W  comprobando  si
+pertenece o no a X.  Finalmente asignará el valor de Z a D y devolverá
+este último vector.
+
+\begin{codesnip}{Algoritmo de la función \textsc{CalculateD}.\cite{li_durbin_2009}}
+\begin{lstlisting}[mathescape=true, language = C]
+$\textsc{CalculateD(W)}$
+   $z\leftarrow 0$
+   $j\leftarrow 0$
+   for $i=0$ to $\left|W\right|-1$ do
+   if W[j,i] is not a substring of X $\textbf{then}$
+     $z\leftarrow z+1$
+     $j\leftarrow i+1$
+   $D(i)\leftarrow z$
+\end{lstlisting}
+\end{codesnip}
+
+\subsubsection{Función de búsqueda inexacta recursiva InexRecur}
+\vspace{-0.7cm}
+Esta función es la encargada de realizar la búsqueda inexacta de forma
+recursiva.   Tendrá  en  cuenta  los  diferentes  tipos  posibles   de
+operaciones (match, sustituciones,  deleciones	e  inserciones).   Los
+parámetros de entrada de InexRecur serán el substring W, el umbral  z,
+y las variables de recursión i, k y l.
+\begin{codesnip}{Algoritmo de la función \textsc{InexRecur}.\cite{li_durbin_2009}}
+\begin{lstlisting}[mathescape=true, language = C]
+$\textsc{InexRecur}(W,i,z,k,l)$
+   if $z<D(i)$ then
+   	return $\emptyset$
+   if $i<0$ then
+   	return $\{[k,l]\}$
+	I$\leftarrow \emptyset$
+   I $\leftarrow$ I $\cup$ $\textsc{InexRecur}(W,i-1,z-1,k,l)$
+   for each b$\in${A,C,G,T} do
+   	$k\leftarrow C(b)+O(b,k-1)+1$
+   	$l\leftarrow C(b)+O(b,l)$
+   	if k$\leq$l then
+   	    I $\leftarrow$ I $\cup$ $\textsc{InexRecur}(W,i,z-1,k,l)$
+   	    if $b=W[i]$ then
+   		I $\leftarrow$ I $\cup$ $\textsc{InexRecur}(W,i-1,z,k,l)$
+   	    else
+   		I $\leftarrow$ I $\cup$ $\textsc{InexRecur}(W,i-1,z-1,k,l)$
+   return I
+\end{lstlisting}
+\end{codesnip}
+
+Vemos pues que para cada posible tipo de operaciones el algoritmo
+llevará a cabo una acción.  En el caso de que se haya producido un
+match (coincidencia) o una mutación de tipo sustitución se volverá a
+llamar a la función InexRecur pero disminuyendo una unidad la variable
+i. En caso de mutación de tipo deleción o sustitución, se volverá a
+llamar a InexRecur disminuyendo una unidad i y z. Y por último, si la
+mutación es en cambio una inserción se disminuirá en 1 la variable z.
+
+\subsubsection{Función InexSearch}
+
+Esta función será la encargada de llamar a la función InexRecur,
+pasándole sus correspondientes parámetros de entrada W, i, z, k y l.
+Las variables de entrada a la función InexSearch serán por tanto el
+substring W y el umbral z.  Podemos ver la lógica de esta función en
+la Figura 5.
+\\
+\begin{codesnip}{Algoritmo de la función \textsc{InexSearch}.\cite{li_durbin_2009}}
+\begin{lstlisting}[mathescape=true, language = C]
+$\textsc{InexactSearch}(W,z)$
+	$\textsc{CalculateD}(W)$
+	return $\textsc{InexRecur}(W,|W|-1,z,1,|X|-1)$
+\end{lstlisting}
+\end{codesnip}
 
 \section{Materiales}
 
-Los  lenguajes	que  hemos  comparado  son  \R,  \python  y  \C.    La
-implementación en \R es la misma a la usada en	las  prácticas	de  la
-asignatura.  Con la implementación proporcionada  hemos  dividido  dos
-versiones, una que dibuja la traza y otra que calcula el resultado  de
-forma limpia.  Todas las versiones del código escrito está  disponible
-en el anejo.
+Los lenguajes que hemos comparado son R, Python y C. La implementación
+en \R es la misma a la usada en las prácticas de la asignatura. Con la
+implementación proporcionada hemos dividido  dos  versiones,  una  que
+dibuja la traza y otra que calcula el resultado de forma limpia. Todas
+las  versiones	del  código  escrito  está  disponible	en  el	anejo.
 
 El tiempo y la memoria la hemos medido de dos maneras. Primero hemos
 evaluado a la función únicamente usando herramientas del lenguaje. En
 \python hemos usado los paquetes
-\lstinline[style=matlab-editor]{resource} y
-\lstinline[style=matlab-editor]{time} para medir el tiempo y la
-memoria. En \R hemos usado la utilidad
-\lstinline[style=matlab-editor]{system.time} para el tiempo y la
-libreria \lstinline[style=matlab-editor]{profmem} para perfilar el uso
-de memoria. En \C{} hemos medido el tiempo usando la librería
-\lstinline[style=matlab-editor]{time.h} y la memoria usando la
-herramienta \lstinline[style=matlab-editor]{Valgrind}. Después hemos
+\lstinline[style=matlab-editor]{resource}\cite{resource_2020} y
+\lstinline[style=matlab-editor]{time}\cite{time_2020} para medir el
+tiempo y la memoria. En \R hemos usado la utilidad
+\lstinline[style=matlab-editor]{system.time}\cite{system.time_documentation}
+para el tiempo y la libreria
+\lstinline[style=matlab-editor]{profmem}\cite{bengtsson} para perfilar
+el uso de memoria. En \C{} hemos medido el tiempo usando la librería
+\lstinline[style=matlab-editor]{time.h}\cite{timeh} y la memoria usando la
+herramienta \lstinline[style=matlab-editor]{Valgrind}\cite{Valgrind10}. Después hemos
+
 medido el uso de recursos desde la línea de comandos, llamando a los
 programas como scripts usando funcionalidades propias de cada
 lenguaje. Con ello podemos evaluar el sobrecoste de cada una de las
 tres plataformas usadas. Para ello hemos empleado la herramienta
-\lstinline[style=matlab-editor]{bench}
-% https://github.com/Gabriel439/bench
-y el comando \lstinline[style=matlab-editor]{time}.
+\lstinline[style=matlab-editor]{bench}\cite{GitHubGa29}
+y el comando \lstinline[style=matlab-editor]{time}\cite{timeh}.
 % https://www.gnu.org/software/time/
-
-\begin{figure}[h!]
-\centering
-\includegraphics[width = 0.4\linewidth]{../gallery/ab.pdf}
-\caption{Árbol de prefijos con intervalos SA de la palabra ``aaaabbbbb\$''.}
-\end{figure}
 
 \section{Resultados}
 
@@ -398,6 +625,67 @@ Cuando consideramos el entorno de ejecución interpretado al completo
 \C{} se mantiene a la cabeza con la sorpresa de que \R emplea $\sim$10
 veces más memoria que \python en este ejemplo en particular.
 
+\section{Discusión}
+
+Como se ha visto en el apartado de Resultados, hemos  implementado  el
+algoritmo BWA  en  los	lenguajes  R,  Python  y  C;  hemos  utilizado
+distintos criterios para evaluar el rendimiento de  éstos  y  realizar
+una comparación de su funcionamiento.  Dichos criterios son el	tiempo
+de  procesamiento  y  la  memoria  usada.   En	el  caso  del  tiempo,
+centrándonos en los  dos  lenguajes  que  queremos  comparar  en  este
+artículo, el que  ofrece  un  tiempo  menor  medido  desde  el	propio
+programa a la hora de alinear las secuencias es Python, mientras que R
+resulta ser más  lento	en  comparación  con  éste.   Por  otro  lado,
+evaluando la memoria, Python  ocupa  aproximadamente  10  veces  menos
+memoria que R midiendo desde fuera del script.
+
+Python es un lenguaje con mensaje interactivo,	permite  la  escritura
+dinámica y administra la memoria automáticamente.  Tiene una  sintaxis
+muy clara e intuitiva, y utiliza márgenes para hacer  los  bloques  de
+declaraciones.	Además, se trata de un software libre por  lo  que  se
+puede acceder a él fácilmente y desde todos los  sistemas  operativos.
+\cite{fangohr_2004}
+
+
+R se trata de un lenguaje de  programación  con  enfoque  de  análisis
+estadístico, no se suele usar para implementar programas  largos  como
+se hace con otros lenguajes.  Permite combinar programación imperativa
+con funcional, además de incluir  programación	orientada  a  objetos.
+Asimismo, es uno de los  lenguajes  más  utilizados  en  investigación
+científica. \cite{bellosta_2018,kleiber_zeileis_2008}
+
+Así pues, basándonos en los ejemplos que hemos ejecutado,  parece  ser
+que en Python es más sencillo implementar el algoritmo InexRecur  (ver
+Anexo 1) y además presenta un mejor valor en los  criterios  evaluados
+anteriormente.	Por lo	tanto,	dado  que  alinear  secuencias	es  un
+procedimiento que ya de por sí consume mucho tiempo,  podríamos  decir
+que a la  hora	de  mapear  una  secuencia  corta  con	un  genoma  de
+referencia grande sería más  rápido  y	eficaz	utilizar  el  lenguaje
+Python. \cite{amigo_2015}
+
+\section{Conclusiones}
+
+Hemos propuesto una implementación del algoritmo InexRecur  en	Python
+para  alineamientos  inexactos	de  fragmentos	 de   secuencias   con
+secuencias largas. Lo implementamos de forma correcta y comprobamos su
+funcionamiento con  varios  ejemplos  con  la  traza  que  se  nos  ha
+proporcionado.	Se comprueba que la programación de este algoritmo  en
+Python proporciona un gran  potencial  para  disminuir	el  tiempo  de
+procesamiento y la memoria total  utilizada,  además  de  ofrecer  una
+sintaxis  más  clara  en  comparación  con  la	implementación	en  R.
+
+
+\clearpage
+\phantom{}
+\vfill
+\begin{figure}[h!]
+\centering
+\includegraphics[width = 0.6\linewidth]{../gallery/ab.pdf}
+\caption{Árbol de prefijos con intervalos SA de la palabra ``aaaabbbbb\$''.}
+\label{fig:arbol2}
+\end{figure}
+\vfill
+
 \clearpage
 
 \phantom{}
@@ -406,12 +694,14 @@ veces más memoria que \python en este ejemplo en particular.
 \centering
 \includegraphics[width = 0.35\linewidth]{../gallery/bananas.pdf}
 \caption{Árbol de prefijos con intervalos SA de la palabra ``bananas\$''.}
+\label{fig:arbol3}
 \end{figure}
 
 \begin{figure}[h]
 \centering
 \includegraphics[width = \linewidth]{../gallery/gen.pdf}
 \caption{Árbol de prefijos con intervalos SA de la palabra ``cgatagtcgggatggttgccg\$''.}
+\label{fig:arbol4}
 \end{figure}
 \clearpage
 \section{Anejo}
@@ -451,4 +741,6 @@ veces más memoria que \python en este ejemplo en particular.
 ]{../inexrecur_clean.c}
 \vfill
 
+\bibliographystyle{IEEEtran}
+\bibliography{citations}
 \end{document}

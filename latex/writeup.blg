@@ -16,45 +16,45 @@ Warning--missing publisher in fangohr_2004
 Warning--missing publisher in bellosta_2018
 
 Done.
-You've used 15 entries,
+You've used 16 entries,
             4087 wiz_defined-function locations,
-            893 strings with 9826 characters,
-and the built_in function-call counts, 5508 in all, are:
-= -- 382
-> -- 80
+            900 strings with 10168 characters,
+and the built_in function-call counts, 6107 in all, are:
+= -- 422
+> -- 97
 < -- 2
-+ -- 40
-- -- 17
-* -- 227
-:= -- 960
-add.period$ -- 27
-call.type$ -- 15
-change.case$ -- 12
++ -- 48
+- -- 21
+* -- 259
+:= -- 1055
+add.period$ -- 30
+call.type$ -- 16
+change.case$ -- 13
 chr.to.int$ -- 6
-cite$ -- 18
-duplicate$ -- 449
-empty$ -- 609
-format.name$ -- 21
-if$ -- 1235
+cite$ -- 19
+duplicate$ -- 499
+empty$ -- 674
+format.name$ -- 26
+if$ -- 1373
 int.to.chr$ -- 0
-int.to.str$ -- 15
-missing$ -- 95
-newline$ -- 88
-num.names$ -- 9
-pop$ -- 299
+int.to.str$ -- 16
+missing$ -- 107
+newline$ -- 93
+num.names$ -- 10
+pop$ -- 333
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 440
+skip$ -- 482
 stack$ -- 0
-substring$ -- 19
-swap$ -- 238
+substring$ -- 20
+swap$ -- 267
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 5
-type$ -- 15
+type$ -- 16
 warning$ -- 3
-while$ -- 10
-width$ -- 17
-write$ -- 152
+while$ -- 11
+width$ -- 18
+write$ -- 163
 (There were 3 warnings)

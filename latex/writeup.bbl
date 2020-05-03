@@ -114,4 +114,14 @@ J.~M. Abuín, J.~C. Pichel, T.~F. Pena, and J.~Amigo, \emph{BigBWA: approaching
   [Online]. Available: \url{https://doi.org/10.1093/bioinformatics/btv506}
 \BIBentrySTDinterwordspacing
 
+\bibitem{Houtgast2015}
+\BIBentryALTinterwordspacing
+E.~J. Houtgast, V.-M. Sima, K.~Bertels, and Z.~Al-Ars, ``An {FPGA}-based
+  systolic array to accelerate the {BWA}-{MEM} genomic mapping algorithm,'' in
+  \emph{2015 International Conference on Embedded Computer Systems:
+  Architectures, Modeling, and Simulation ({SAMOS})}.\hskip 1em plus 0.5em
+  minus 0.4em\relax {IEEE}, Jul. 2015. [Online]. Available:
+  \url{https://doi.org/10.1109/samos.2015.7363679}
+\BIBentrySTDinterwordspacing
+
 \end{thebibliography}

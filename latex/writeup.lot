@@ -1,0 +1,15 @@
+\babel@toc {spanish}{}
+\contentsline {table}{\numberline {1}{\ignorespaces Obtención de los vectores C(a) y O(a,i) dado W y X.}}{6}{table.1}%
+\contentsline {table}{\numberline {2}{\ignorespaces Algoritmo de la función \textsc {CalculateD}.\cite {li_durbin_2009}}}{7}{table.2}%
+\contentsline {table}{\numberline {3}{\ignorespaces Algoritmo de la función \textsc {InexRecur}.\cite {li_durbin_2009}}}{7}{table.3}%
+\contentsline {table}{\numberline {4}{\ignorespaces Algoritmo de la función \textsc {InexSearch}.\cite {li_durbin_2009}}}{8}{table.4}%
+\contentsline {table}{\numberline {5}{\ignorespaces Traza de \textsc {InexRecur} con X = ``googol\$'', W = ``gol'', z = 0 en C y Python }}{9}{table.5}%
+\contentsline {table}{\numberline {6}{\ignorespaces Traza de \textsc {InexRecur} con X = ``googol\$'', W = ``gol'', z = 0 en R }}{9}{table.6}%
+\contentsline {table}{\numberline {7}{\ignorespaces Traza de \textsc {InexRecur} con X = ``googol\$'', W = ``goog'', z = 0 en C y Python }}{10}{table.7}%
+\contentsline {table}{\numberline {8}{\ignorespaces Traza de \textsc {InexRecur} con X = ``googol\$'', W = ``goog'', z = 0 en R }}{10}{table.8}%
+\contentsline {table}{\numberline {9}{\ignorespaces Traza de \textsc {InexRecur} con X = ``googol\$'', W = ``gool'', z = 1 en C y Python }}{11}{table.9}%
+\contentsline {table}{\numberline {10}{\ignorespaces Traza de \textsc {InexRecur} con X = ``googol\$'', W = ``gool'', z = 1 en R }}{12}{table.10}%
+\contentsline {table}{\numberline {11}{\ignorespaces Tiempos de ``CPU''.}}{13}{table.11}%
+\contentsline {table}{\numberline {12}{\ignorespaces Tiempo de ``pared'' según la utilidad \textit {bench}.}}{13}{table.12}%
+\contentsline {table}{\numberline {13}{\ignorespaces Memoria usada medido desde el script.}}{14}{table.13}%
+\contentsline {table}{\numberline {14}{\ignorespaces Memoria usada medido desde fuera del script.}}{14}{table.14}%

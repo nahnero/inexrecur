@@ -24,8 +24,9 @@ static int  Wlen;
 
 
 int main (void){
-	printf ("\t\t   Mutation  i  z  k  l\n");
-	setup ("googol$", "lol", "glo", 1);
+	printf ("C\n");
+	printf ("\t\t  Mutation   i  z  k  l\n");
+	setup ("googol$", "gool", "glo", 1);
 	/* setup ("googol$", "goog", "glo", 0); */
 	/* setup ("googol$", "gool", "glo", 1); */
 	return 0;
@@ -66,7 +67,7 @@ void setup (char* X1, char* W1, char* dic1, int z){
 	for (i = 0; i != length; i++) Xs[i] = BWT[i][0];
 
 	i = 0; while (X[++i]);
-	InexRecur (W1, Wlen - 1, z, 0, i - 1, 1);
+	InexRecur (W1, Wlen - 1, z, 1, i - 1, 1);
 
 	free (D); free (Xs);
 	free (B); free (X2);

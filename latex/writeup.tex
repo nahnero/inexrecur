@@ -387,6 +387,23 @@ tres plataformas usadas.  Para	ello  hemos  empleado  la  herramienta
 \lstinline[style=matlab-editor]{bench}\cite{GitHubGa29} y  el  comando
 \lstinline[style=matlab-editor]{time}\cite{timeh}.
 
+Así pues, vamos a probar el algoritmo de búsqueda recursiva  InexRecur
+con las implementaciones en los lenguajes R, Python  y	C  (pues  este
+último	tiene  una  implementación  muy  similar  a  la  de   Python).
+Tomaremos como string de referencia X=`googol\$’ y realizaremos	varias
+pruebas  con  diferentes  substrings  W=`gol’;	W=`goog’;  W=`gool’  y
+asignaremos primero un valor máximo  de  errores  z=0  (equivalente  a
+realizar   una	 búsqueda   exacta)   y   posteriormente    un	  z=1.
+
+
+\phantom{}
+\begin{figure}[h!]
+\centering
+\includegraphics[width = 0.4\linewidth]{../gallery/bananas.pdf}
+\caption{Árbol de prefijos con intervalos SA de la palabra ``bananas\$''.}
+\label{fig:arbol3}
+\end{figure}
+
 \section{Resultados}
 
 Hemos implementado las trazas de manera que son perfectamente
@@ -633,16 +650,16 @@ inexrecur_clean.c
 ==81469==   total heap usage: 191 allocs, 27 frees, 24,894 bytes allocated
 
 inexrecur_mem.py
-6,631,424 bytes
+14,007,812 bytes
 
 inexrecur_mem.R
 4,932,584 bytes
 \end{lstlisting}
 \end{codesnip}
 
-La memoria usada es comparable en \R y \python cuando la medimos sin
-tener en cuenta el entorno de ejecución, \C{} utiliza entorno a 200
-veces menos memoria.
+La memoria usada es bastante mayor  en	Python	que  en  R  cuando  la
+medimos sin tener en cuenta el entorno de ejecución, C utiliza
+sustancialmente menos memoria.
 
 \vfill
 \begin{codesnip}{Memoria usada medido desde fuera del script.}
@@ -652,7 +669,7 @@ time ./inexrecur_clean
 (1,1)
 ./inexrecur_clean
 0.00s  user 0.00s system 44% cpu 0.004 total
-max memory:                676 kB
+max memory:                1676 kB
 
 time ./inexrecur_clean.py
 (1, 1)
@@ -753,15 +770,6 @@ sintaxis  más  clara  en  comparación  con  la	implementación	en  R.
 \vfill
 
 \clearpage
-
-\phantom{}
-\vspace{3cm}
-\begin{figure}[h]
-\centering
-\includegraphics[width = 0.35\linewidth]{../gallery/bananas.pdf}
-\caption{Árbol de prefijos con intervalos SA de la palabra ``bananas\$''.}
-\label{fig:arbol3}
-\end{figure}
 
 \begin{figure}[h]
 \centering

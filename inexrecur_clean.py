@@ -49,7 +49,7 @@ for i in BWT: S.append (i[1]); B += (i[0][-1])
 C = lambda a: ''.join (sorted (X.replace ('$', '')))[0:-2].find (a)
 O = lambda a, i: B[0:i+1].count (a)
 
-D = CalculateD (W)
-
+D  = CalculateD (W)
 IS = InexSearch (W, 1)
+
 for i in IS: print (i)

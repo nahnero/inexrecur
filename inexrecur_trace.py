@@ -47,7 +47,7 @@ def InexSearch (W, z):
             z = z,
             k = 1,
             l = len (X)-1,
-            depth = 0)
+            depth = 1)
 X = 'googol$';
 W = 'gool'
 dic = ''.join (sorted (set (X.replace ('$', ''))))
@@ -62,5 +62,6 @@ O = lambda a, i: B[0:i+1].count (a)
 #  D = CalculateD (W)
 D = [0,0,0,1]
 
+print ('Python')
 IS = InexSearch (W, 1)
 #  print (IS)

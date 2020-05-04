@@ -13,7 +13,7 @@
 \contentsline {subsubsection}{\numberline {2.2.2}Función de búsqueda inexacta recursiva InexRecur}{7}{subsubsection.2.2.2}%
 \contentsline {subsubsection}{\numberline {2.2.3}Función InexSearch}{8}{subsubsection.2.2.3}%
 \contentsline {section}{\numberline {3}Materiales}{8}{section.3}%
-\contentsline {section}{\numberline {4}Resultados}{9}{section.4}%
-\contentsline {section}{\numberline {5}Discusión}{15}{section.5}%
-\contentsline {section}{\numberline {6}Conclusiones}{15}{section.6}%
+\contentsline {section}{\numberline {4}Resultados}{10}{section.4}%
+\contentsline {section}{\numberline {5}Discusión}{16}{section.5}%
+\contentsline {section}{\numberline {6}Conclusiones}{16}{section.6}%
 \contentsline {section}{\numberline {7}Anejo}{19}{section.7}%

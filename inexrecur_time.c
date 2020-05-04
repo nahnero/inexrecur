@@ -31,10 +31,10 @@ int main (void){
 	double cpu_time_used = 0;
 	size_t i, iterations = 10000;
 	for (i = 0; i != iterations; i++){
-	start = clock();
-	setup ("googol$", "lol", "glo");
-	end = clock();
-	cpu_time_used += ((double) (end - start)) / (CLOCKS_PER_SEC/1e6);
+		start = clock();
+		setup ("googol$", "lol", "glo");
+		end = clock();
+		cpu_time_used += ((double) (end - start)) / (CLOCKS_PER_SEC/1e6);
 	}
 	printf ("CPU time mean: %.2f micro s from %zu iterations\n ",
 		       	cpu_time_used/iterations,

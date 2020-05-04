@@ -54,14 +54,8 @@ def script ():
     IS = InexSearch (W, 1)
     #  for i in IS: print (i)
 
-    # coding: utf-8
-
 if __name__ == '__main__':
-    script ()
-    #  from memory_profiler import memory_usage
-    #  mem_usage = memory_usage (script)
-    #  a = max (mem_usage)
-    #  print ("%.2f"%(a), 'megaBytes')
-    import resource
-    a = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
-    print (a, 'bytes')
+    from memory_profiler import memory_usage
+    mem_usage = memory_usage (script)
+    a = max (mem_usage)
+    print ("%f"%(a), 'megaBytes')
